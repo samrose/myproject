@@ -17,3 +17,12 @@ Ready to run in production? Please [check our deployment guides](https://hexdocs
   * Docs: https://hexdocs.pm/phoenix
   * Forum: https://elixirforum.com/c/phoenix-forum
   * Source: https://github.com/phoenixframework/phoenix
+
+
+## flox
+
+### Starting the flox-supplied postgres instance
+
+```
+ pg_ctl start -o "-p 5432 -c listen_addresses='*' -c unix_socket_directories=/run/postgres -c unix_socket_permissions=0700"
+```

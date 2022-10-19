@@ -1,8 +1,9 @@
-{pkgs, mkShell, ...}:
+{pkgs, stdenv, lib, mkShell, ...}:
 
 mkShell {
   name = "phoneix-shell";
-  buildInputs = [pkgs.postgresql_14 pkgs.elixir pkgs.jq];
+  buildInputs = [pkgs.postgresql_14 pkgs.elixir pkgs.jq pkgs.inotify-tools]++ lib.optionals stdenv.isDarwin
+    (with pkgs.darwin.apple_sdk.frameworks; [ CoreFoundation CoreServices ]);
   shellHook = ''
     export LOCALE_ARCHIVE=/usr/lib/locale/locale-archive
     export LC_ALL="en_US.UTF-8"
