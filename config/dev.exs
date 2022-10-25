@@ -2,7 +2,7 @@ import Config
 
 # Configure your database
 config :myproject, Myproject.Repo,
-  username: "sam",
+  username: "samrose",
   password: "postgres",
   hostname: "localhost",
   database: "myproject_dev",

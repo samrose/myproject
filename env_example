@@ -1,2 +1,1 @@
-export  RELEASE_COOKIE="mycookie";
 export SECRET_KEY_BASE="fGUKlLkkgETvvjDlxYFqgF1wDULjBx9/O92kIgR+LwDvCIWGcUHpZ1fDcReplzPJ"

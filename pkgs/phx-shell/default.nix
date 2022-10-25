@@ -2,15 +2,16 @@
 
 mkShell {
   name = "phoneix-shell";
-  buildInputs = [pkgs.postgresql_14 pkgs.elixir pkgs.jq pkgs.inotify-tools]++ lib.optionals stdenv.isDarwin
-    (with pkgs.darwin.apple_sdk.frameworks; [ CoreFoundation CoreServices ]);
+  buildInputs = [pkgs.postgresql_14 pkgs.elixir pkgs.jq]
+    ++ lib.optional stdenv.isLinux pkgs.inotify-tools
+    ++ lib.optionals stdenv.isDarwin (with pkgs.darwin.apple_sdk.frameworks; [ CoreFoundation CoreServices ]);
   shellHook = ''
     export LOCALE_ARCHIVE=/usr/lib/locale/locale-archive
     export LC_ALL="en_US.UTF-8"
     export LC_CTYPE="en_US.UTF-8"
     export PGDATA=$PWD/postgres_data
-    export PGHOST=/run/postgres 
-    export LOG_PATH=/run/postgres/LOG
+    export PGHOST=$PWD/postgres
+    export LOG_PATH=$PWD/postgres/LOG
     export PGDATABASE=postgres
     export DATABASE_URL="postgresql:///postgres?host=$PGHOST"
     if [ ! -d $PWD/postgres ]; then
@@ -20,8 +21,8 @@ mkShell {
       echo 'Initializing postgresql database...'
       initdb $PGDATA --auth=trust >/dev/null
     fi
-    #pg_ctl start -l $LOG_PATH -o "-p 5435 -c listen_addresses='*' -c unix_socket_directories=$PWD/postgres -c unix_socket_permissions=0700"
-    #psql -p 5435 postgres -c 'create extension if not exists postgis' || true   
+    #pg_ctl start -l $LOG_PATH -o "-p 5432 -c listen_addresses='*' -c unix_socket_directories=$PWD/postgres -c unix_socket_permissions=0700"
+    #psql -p 5435 postgres -c 'create extension if not exists postgis' || true
     mkdir -p .nix-mix
     mkdir -p .nix-hex
     export MIX_HOME=$PWD/.nix-mix
